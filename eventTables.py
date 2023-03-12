@@ -11,17 +11,19 @@ eventData = f['charge']['events']['data']
 hitData = f['charge']['hits']['data']
 
 
-def hitDataPerEvent(event):
-    t0 = event['ts_start']
-    tf = event['ts_end']
+def hit_data_per_event(evt):
+    t0 = evt['ts_start']  # Grab the start and end of the event
+    tf = evt['ts_end']
 
-    eventMask = (hitData['ts'] >= t0) & (hitData['ts'] < tf)
+    event_mask = (hitData['ts'] >= t0) & (hitData['ts'] < tf)  # use bitwise and to select only hit data
+    # for this specific event's timeframe. (an array of all the times)
 
-    events = hitData[eventMask]
+    events = hitData[event_mask]  # get the data for each entry given the 'ts' values.
+    # (an array of all the events)
 
-    px = events['px']
+    px = events['px']  # get the x and y
     py = events['py']
-    ts = events['ts']
+    ts = events['ts']  # Potentially redundant, but the eventDisplay did this.
     q = events['q']
     data = {
         'x': px,
@@ -38,5 +40,5 @@ for event in eventData:
     nHits = event['nhit']
     strr = "Hits: " + str(nHits)
     print(strr)
-    hitDataPerEvent(event)
+    hit_data_per_event(event)
     input("Type any key for the next graph.")
